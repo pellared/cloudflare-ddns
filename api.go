@@ -34,7 +34,7 @@ func GetRecord(ctx context.Context, api *cloudflare.API, domainName string) (*cl
 	logrus.WithField("zoneID", zoneID).Debug("got zone id")
 
 	// Print zone details
-	dnsRecords, err := api.DNSRecords(ctx, zoneID, cloudflare.DNSRecord{
+	dnsRecords, _, err := api.ListDNSRecords(ctx, cloudflare.ZoneIdentifier(zoneID), cloudflare.ListDNSRecordsParams{
 		Name: domainName,
 	})
 	if err != nil {
@@ -95,7 +95,13 @@ func UpdateDomain(ctx context.Context, api *cloudflare.API, domainNames, ipEndpo
 		// Update the DNS record to include the new IP address.
 		record.Content = newIP
 
-		if err := api.UpdateDNSRecord(ctx, record.ZoneID, record.ID, *record); err != nil {
+		params := cloudflare.UpdateDNSRecordParams{
+			Type: record.Type,
+			Name: record.Name,
+			Content: newIP, // Update the DNS record to include the new IP address.
+			ID: record.ID,
+		}
+		if _, err := api.UpdateDNSRecord(ctx, cloudflare.ZoneIdentifier(record.ZoneID), params); err != nil {
 			return errors.Wrap(err, "could not update the DNS record")
 		}
 
