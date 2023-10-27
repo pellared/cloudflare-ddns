@@ -2,7 +2,7 @@
 
 ![Test](https://github.com/pellared/cloudflare-ddns/workflows/Test/badge.svg)
 
-This is an updated fork of <github.com/wyattjoh/cloudflare-ddns>.
+This is an updated fork of <https://github.com/wyattjoh/cloudflare-ddns>.
 
 This was a project designed to explore the [Cloudflare API](https://api.cloudflare.com/)
 through their official [Go Client](https://github.com/cloudflare/cloudflare-go).
